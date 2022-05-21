@@ -49,20 +49,6 @@
 </tdbody>
 </table>
 
-# Docker
-
-[![License][license]][license-file]
-[![Downloads][downloads]][releases]
-[![Last Commit][last-commit]][releases]
-
-[![Debian][Debian]][debian-site]
-[![Git][Git]][git-site]
-[![GitHub][GitHub]][github-site]
-[![Vim][Vim]][vim-site]
-[![Java][Java]][java-site]
-
-#
-
 ## OBJETIVOS Y TEMAS
 
 ### OBJETIVOS
@@ -81,29 +67,67 @@
     docker run -p 8088:80 rcd22image
     ```
 -   2. Crear dos contenedores que puedan comunicarse: ping.
-    <br>
-    Para la creación de dos contenedores, que son los encargados de hacerse ping se tiene que tener una red en común entre ambon contenedores, para que estos ya puedan comunicarse. Primero, hay que tener en consideración que ya hayamos hecho un pull a alguna imagen y hayamos creado unos contenedores que surgen en base a esa imagen a la que le hemos hecho pull. Para ello usamos el comando *docker pull debian*, y en base a ello, crearemos dos contenedores, haciendo uso del comando *docker create --name nombre imagen*. 
-    ![Create](CreateDocker.jpg)
-    <br>
-    Una vez realizado eso, se crea una red a las que vamos a conectar nuestros contenedores *docker create network nombredelared*. y corremos los contenedores: *docker run --network red --name nombre nombreimagen*.
-    ![Run](runDocker.jpg)
-    Instalaremos los paquetes necesarios para poder hacer ping y haremos ping, entre ambos contenedores con el comando *ping direccionip*, corroborando de esta manera que pertenecen a la misma red.
-    ![Install](installDocker.jpg)
-    ![Ping](pingDocker.jpg)
-    <br>
+   
+    Para la creación de dos contenedores, que son los encargados de hacerse ping se tiene que tener una red en común entre ambon contenedores, para que estos ya puedan     comunicarse. Primero, hay que tener en consideración que ya hayamos hecho un pull a alguna imagen y hayamos creado unos contenedores que surgen en base a esa           imagen a la que le hemos hecho pull. Para ello usamos el comando *docker pull debian*, y en base a ello, crearemos dos contenedores, haciendo uso del comando           *docker create --name nombre imagen*. 
+    <p align="center">
+        <img src="CreateDocker.jpg" width="700px" height="400px">
+    </p>
+    
+    Una vez realizado eso, se crea una red a las que vamos a conectar nuestros contenedores *docker create network nombredelared*. y corremos los contenedores: *docker     run --network red --name nombre nombreimagen*.
+    <p align="center">
+        <img src="runDocker.jpg" width="700px" height="400px">
+    </p>
+    
+    Instalaremos los paquetes necesarios para poder hacer ping y haremos ping, entre ambos contenedores con el comando *ping direccionip*, corroborando de esta manera      que pertenecen a la misma red.
+    <p align="center">
+        <img src="installDocker.jpg" width="700px" height="400px">
+    </p>
+    <p align="center">
+        <img src="pingDocker.jpg" width="700px" height="400px">
+    </p>
+    
 -   3. Investigar acerca de la ejecución de programas con interfaz gráfica dentro de contenedores Docker.
-
+    
+    Para la ejecución de programas con GUI, en Docker es necesario la elaboración de una serie de pasos en específico. Pero primero, hay que tener en concepto que         Docker es una aplicación diseñada para poder colocar en conenedores aquellas aplicaciones orientadas a nivel de servidor. A nivel de ejemplo en una aplicación web     que cuenta con servidor para el front, back, data, y otros componenentes que se encuentran en la nube Docker puede correrlos a nivel de consola, se cree que no se     puede correr programas con GUI en Docker, pero esto es falso, pues es posible conectando el "display" de la computadora anfitriona al contenedor. A nivel de pasos,    quedaría mas o menos de la siguiente manera:
+    
+    <ul>
+        <li>Creación del dockerfile: Que instale xauth y el programa que querramos correr</li>
+        <li>Copia la Cookie para conectar el "display" del servidor x con el comando: **xauth list** en Linux</li>
+        <li>Construye la imagen de Docker</li>
+        <li>Construye y corre el contenedor de Docker</li>
+        <li>Añade la cookie a la lista</li>
+        <li>Corre la instancia del programa que se quiera desde la consola, con el comando que sea que corra el programa</li>
+    </ul>
 #
 
 ## CUESTIONARIO
 
 - ¿Qué son los "cgroups" del kernel de Linux? y ¿Qué diferencia más interesante encontró entre las versiones 1 y 2?
-   Los cgroups, que en su forma no abreviada se conocen como: "control groups" es una característica del kernel de Linux que permite limitar, llevar cuenta y aislar    los recursos de uso: CPU, memoria, etc. De un grupo de procesos. Permite organizar los procesos de una manera jerárquica los cuales son limitados y monitoreados. Esta jerarquía se define creando, eliminando y renombrando subdirectorios dentro del sistema de archivos cgroup. Existen diversas difencias entre ambas versiones sacadas a la luz computacional, entre ellas tenemos: La versión 1 
+ 
+    Los cgroups, que en su forma no abreviada se conocen como: "control groups" es una característica del kernel de Linux que permite limitar, llevar cuenta y aislar       los recursos de uso: CPU, memoria, etc. De un grupo de procesos. Permite organizar los procesos de una manera jerárquica los cuales son limitados y monitoreados.       Esta jerarquía se define creando, eliminando y renombrando subdirectorios dentro del sistema de archivos cgroup. Existen diversas difencias entre ambas versiones       sacadas a la luz computacional, entre ellas tenemos: 
+    
+    La versión 1 posee la particularidad de que un proceso puede pertenecer a muchos subgrupos, si esos subgrupos están en diferentes jerarquías con diferentes             controladores adjuntos. Pero, como la pertenencia a más de un subgrupo dificulta la desambiguación de la pertenencia a un subgrupo. Adjunto un enlace de control de     los recursos de la computadora haciendo uso de los cgroup de esta versión: 
+    https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/managing_monitoring_and_updating_the_kernel/setting-limits-for-applications_managing-monitoring-and-updating-the-kernel#setting-cpu-limits-to-applications-using-cgroups-v1_setting-limits-for-applications
+    
+    La versión 2 cuenta con la característica de que sólo se pueden crear subgrupos en una única jerarquía. Además de solamente tener la particularidad de poder           adjuntar procesos a las hojas de la jerarquía. No se puede adjuntar un proceso a un subgrupo interno si tiene algún controlador habilitado. La razón detrás de esta     regla es que los procesos en un determinado subgrupo que compiten por los recursos con los hilos adjuntos a su grupo padre crean importantes dificultades de           implementación. Finalmente la segunda versión un proceso puede pertenecer solamente a un subgrupo.
 
 - ¿Qué son los "namespaces" del kernel de Linux? y ¿Cuáles son los tipos de "namespaces"?
+
+
+
 - ¿Qué diferencia puede resaltar entre LXC y libcontainer?
+
+
+
 - Investigue acerca del malware Doki y explique brevemente.
+
+    El malware Doki es un trojano backdoor que hace uso de la API de la criptomoneda DogeCoin, para poder extraer el nombre del dominio de su servidor Comando y           Control: máquina que permite la ejecución de comandos en tiempo real pertenecientes a la botnet a manos de un delincuente. Para determinar la ddirección del           dominio este malware usa DynDNS que permite actualizar en tiempo real nombre de dominio y el algoritmo dinámico DGA, que permite generar dominios basados en la         criptomoneda DogeCoin. Esto permite a Doki cambiar de servidor de donde recibe sus comandos, siendo dificil permtir su rastreo.
+
+    Este malware saca provecho de de los sistemas comprometidos para escanear la red en búsqueda de puertos asociados con Redis, SSH, Docker y HTTP; utilizando             herramientas de escaneo como zmap, zgrap y jq. Por ello se recomienda proteger las API de Docker hacia internet haciendo uso de una VPN además de aplicar prácticas     de seguridad explicadas en los manuales de Docker. 
+
 - ¿Hasta que punto la empresa RedHat se ha comprometido con el proyecto Docker?
+ 
+    La empresa desarrolladora de Docker se ha comprometido bastante con Docker, hasta tal punto de generar certificaciones por el manejo correctoo de esta herramienta,     entre las certificaciones más frecuentes se encuentra la de: ***Red Hat Certificate of Expertise in Container Administration***. Que en entos momentos es una           certificación retirada, pero hasta ese punto ha llegado la empresa. Para obtener la certificación, se daba un examen que era la prueba de este título del manejro       de esta herramienta basada en contenedores: https://www.redhat.com/es/services/certification/rhcoe-atomic-host-container-administration
 
 #
 
@@ -116,38 +140,6 @@
 -   [Cómo instalar y usar Docker en Ubuntu 20.04][Cómo instalar y usar Docker en Ubuntu 20.04]
 
 #
-
-[license]: https://img.shields.io/github/license/rescobedoulasalle/git_github?label=rescobedoulasalle
-[license-file]: https://github.com/rescobedoulasalle/git_github/blob/main/LICENSE
-
-[downloads]: https://img.shields.io/github/downloads/rescobedoulasalle/git_github/total?label=Downloads
-[releases]: https://github.com/rescobedoulasalle/git_github/releases/
-
-[last-commit]: https://img.shields.io/github/last-commit/rescobedoulasalle/git_github?label=Last%20Commit
-
-[Debian]: https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white
-[debian-site]: https://www.debian.org/index.es.html
-
-[Git]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
-[git-site]: https://git-scm.com/
-
-[GitHub]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
-[github-site]: https://github.com/
-
-[Vim]: https://img.shields.io/badge/VIM-%2311AB00.svg?style=for-the-badge&logo=vim&logoColor=white
-[vim-site]: https://www.vim.org/
-
-[Java]: https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white
-[java-site]: https://docs.oracle.com/javase/tutorial/
-
-[Docker-site]: https://www.docker.com/
-[Moby-Github]: https://github.com/moby/moby
-[Containers-PDF]: http://www.haifux.org/lectures/320/netLec8_final.pdf
-[Joomla-MySQL]: https://dondocker.com/orquestando-contenedores-docker-para-tener-un-joomla-y-un-mysql-en-diferentes-hosts/
-[Docker-Tutorial-Youtube]: https://www.youtube.com/watch?v=VeiUjkiqo9E#t=60
-
-[Docker: A 'Shipping Container' for Linux Code]: https://web.archive.org/web/20130808043357/http://www.linux.com/news/enterprise/cloud-computing/731454-docker-a-shipping-container-for-linux-code/
-[Tutorial de Docker: instalar y gestionar la plataforma de contenedores]: https://www.ionos.es/digitalguide/servidores/configuracion/tutorial-docker-instalacion-y-primeros-pasos/
 
 [Docker-Hub]: https://hub.docker.com/
 
