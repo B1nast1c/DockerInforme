@@ -113,10 +113,21 @@
 
 - ¿Qué son los "namespaces" del kernel de Linux? y ¿Cuáles son los tipos de "namespaces"?
 
-
+    Los "namespaces" del kernel de Linux son "administradores" que permiten encapsular recursos globales de manera aislada, evitando de esta manera que puedan             interferir con procesos que se encuentren en ese momento fuera del mismo namespace, sin la necesidad de tener que salir de las máquinas virtuales. Los cambios o       alteraciones que se hagan a este recurso global aislado es visible para todas aquellos procesos que formen parte del namespace, pero invisibles para el resto. Los     namespaces ayudan a la implementación de contenedores. Existen 7 tipos:
+    
+    <ul>
+        <li>Mount</li>
+        <li>Process</li>
+        <li>Interprocess Communication</li>
+        <li>Network</li>
+        <li>User</li>
+        <li>UTS</li>
+        <li>cgroup</li>
+    </ul>
 
 - ¿Qué diferencia puede resaltar entre LXC y libcontainer?
-
+    
+    Ambas son plataformas de contenedores que se comunican con el kernel de la máquina anfitriona, pero las principales diferencias entre ambas plataformas son las         siguiente: Los contenedores de Linux (LXC) son más flexibles en el diseño, y son mucho más cercanos a las máquinas virtuales. Estos mecanismos ayudan al control       del uso de recursos y la visibilidad de procesos con el resto del sistema. Por otra parte los contenedores de Docker (libcontainer) están específicamente orientado     a aplicaciones de microservicios, lo que lo hace más simple y sin la necesidad de conocer Linux. Otra de las grandes diferencias se encuentra en la velocidad,         mientras que los LXC se demoran un poco más descargando las imágenes, Docker se demora menos tiempo, pero es insignificante. En cuestión a la seguridad, los           contenedores de Linux presentan una mayor protección pues Docker requiere de atención de ingeneros en seguridad. Con respecto al aspecto de la escalabilidad, los       LXC son menos escalables que los contenedores de Docker, pues las imágenes no son más livianas que las máquinas virtuales o físicas. Con Docker puedes dividir tu       aplicación en diversos contenedores que almacenan funcionalidades.
 
 
 - Investigue acerca del malware Doki y explique brevemente.
@@ -144,15 +155,3 @@
 [Docker-Hub]: https://hub.docker.com/
 
 [Cómo instalar y usar Docker en Ubuntu 20.04]:https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-es
-
-
-[![Debian][Debian]][debian-site]
-[![Git][Git]][git-site]
-[![GitHub][GitHub]][github-site]
-[![Vim][Vim]][vim-site]
-[![Java][Java]][java-site]
-
-[![License][license]][license-file]
-[![Downloads][downloads]][releases]
-[![Last Commit][last-commit]][releases]
-
