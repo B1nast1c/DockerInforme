@@ -81,7 +81,16 @@
     docker run -p 8088:80 rcd22image
     ```
 -   2. Crear dos contenedores que puedan comunicarse: ping.
-
+    <br>
+    Para la creación de dos contenedores, que son los encargados de hacerse ping se tiene que tener una red en común entre ambon contenedores, para que estos ya puedan comunicarse. Primero, hay que tener en consideración que ya hayamos hecho un pull a alguna imagen y hayamos creado unos contenedores que surgen en base a esa imagen a la que le hemos hecho pull. Para ello usamos el comando *docker pull debian*, y en base a ello, crearemos dos contenedores, haciendo uso del comando *docker create --name nombre imagen*. 
+    ![Create](/docker/CreateDocker.jpg)
+    <br>
+    Una vez realizado eso, se crea una red a las que vamos a conectar nuestros contenedores *docker create network nombredelared*. y corremos los contenedores: *docker run --network red --name nombre nombreimagen*.
+    ![Run](/docker/runDocker.jpg)
+    Instalaremos los paquetes necesarios para poder hacer ping y haremos ping, entre ambos contenedores con el comando *ping direccionip*, corroborando de esta manera que pertenecen a la misma red.
+    ![Install](/docker/installDocker.jpg)
+    ![Ping](/docker/pingDocker.jpg)
+    <br>
 -   3. Investigar acerca de la ejecución de programas con interfaz gráfica dentro de contenedores Docker.
 
 #
@@ -89,7 +98,7 @@
 ## CUESTIONARIO
 
 - ¿Qué son los "cgroups" del kernel de Linux? y ¿Qué diferencia más interesante encontró entre las versiones 1 y 2?
-   Los cgroups, que en su forma no abreviada se conocen como: "control groups" es una característica del kernel de Linux que permite limitar, llevar cuenta y aislar    los recursos de uso: CPU, memoria, etc. De un grupo de procesos. Permite organizar los procesos de una manera jerárquica los cuales son limitados y monitoreados. Esta jerarquía se define creando, eliminando y renombrando subdirectorios dentro del sistema de archivos cgroup. Existen diversas difencias entre ambas versiones sacadas a la luz computacional, entre ellas tenemos: 
+   Los cgroups, que en su forma no abreviada se conocen como: "control groups" es una característica del kernel de Linux que permite limitar, llevar cuenta y aislar    los recursos de uso: CPU, memoria, etc. De un grupo de procesos. Permite organizar los procesos de una manera jerárquica los cuales son limitados y monitoreados. Esta jerarquía se define creando, eliminando y renombrando subdirectorios dentro del sistema de archivos cgroup. Existen diversas difencias entre ambas versiones sacadas a la luz computacional, entre ellas tenemos: La versión 1 
 
 - ¿Qué son los "namespaces" del kernel de Linux? y ¿Cuáles son los tipos de "namespaces"?
 - ¿Qué diferencia puede resaltar entre LXC y libcontainer?
