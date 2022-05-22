@@ -66,6 +66,47 @@
     ```sh
     docker run -p 8088:80 rcd22image
     ```
+    
+    Primero a tener en consideración que se han ejecutado todos los comandos colocados por el profesor, y las modificaciones se muestran luego. Primero hasta el punto     donde se han llegado a implementar los comandos con sus capturas de pantalla:
+    
+    *apt-get install apache2
+    etc/init.d/apache2 start
+    /etc/init.d/apache2 status*
+    <p align="center">
+        <img src="apachePregunta1.jpg" width="400px" height="500px">
+    </p>
+    Se muestra la ejecución del comando de instalación inicio y estado después de haber sido ejecutados en la consola del contenedor Docker
+    
+    *ufw app list
+    ufw allow 'Apache'
+    ufw app list*
+    <p align="center">
+        <img src="ufwPregunta1.jpg" width="400px" height="500px">
+    </p>
+    Ejecución luego de haber habilitado el comando ufw para Apache en Ubuntu (contenedor de Docker)
+    
+    *apache2ctl enable apache2*
+    <p align="center">
+        <img src="systemctlPregunta1.jpg" width="400px" height="500px">
+    </p>
+    Ejecución del inicio del servidor apache, al iniciar el contenedor
+    
+    **MODIFICACIÓN DEL ARCHIVO INDEX.HTML**
+    Este archivo se encuentra en el fichero var/www/html, y procederemos a eliminar su contenido por defecto y dejar un mensaje que se muestre al ingresar a nuestro       servidor desde nuestro computador anfitrión, esto haciendo uso del comando: *echo mensaje > index.html* dentro del fichero ya mencionado:
+    <p align="center">
+        <img src="modificaPregunta1.jpg" width="400px" height="500px">
+    </p>
+    
+    Una vez modificado ello, procederemos a salir del contenedor y crear una imagen de las modificaciones con el comando *docker commit idcontainer nombreimagen*:
+    <p align="center">
+        <img src="commitPregunta1.jpg" width="400px" height="500px">
+    </p>
+    
+     Finalmente corremos la imagen con el comando *docker run -p 8888:80 --name=nombrecontainer nombreimagen apache2ctl -D FOREGROUND*
+     <p align="center">
+        <img src="correrPregunta1.jpg" width="700px" height="400px">
+    </p>
+    
 -   2. Crear dos contenedores que puedan comunicarse: ping.
    
     Para la creación de dos contenedores, que son los encargados de hacerse ping se tiene que tener una red en común entre ambon contenedores, para que estos ya puedan     comunicarse. Primero, hay que tener en consideración que ya hayamos hecho un pull a alguna imagen y hayamos creado unos contenedores que surgen en base a esa           imagen a la que le hemos hecho pull. Para ello usamos el comando *docker pull debian*, y en base a ello, crearemos dos contenedores, haciendo uso del comando           *docker create --name nombre imagen*. 
