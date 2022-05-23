@@ -91,7 +91,7 @@
     </p>
     Ejecución del inicio del servidor apache, al iniciar el contenedor
     
-    **MODIFICACIÓN DEL ARCHIVO INDEX.HTML**
+    #**MODIFICACIÓN DEL ARCHIVO INDEX.HTML**
     Este archivo se encuentra en el fichero var/www/html, y procederemos a eliminar su contenido por defecto y dejar un mensaje que se muestre al ingresar a nuestro       servidor desde nuestro computador anfitrión, esto haciendo uso del comando: *echo mensaje > index.html* dentro del fichero ya mencionado:
     <p align="center">
         <img src="modificaPregunta1.jpg" width="400px" height="500px">
